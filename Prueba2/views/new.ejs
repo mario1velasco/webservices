@@ -1,0 +1,20 @@
+<script>
+  var socket = io.connect('http://localhost:8080', {
+    'forceNew': true
+  });
+
+  $('#newChat1').click(() => {
+    socket.emit('join', {room1:"1"});
+    return false;
+  });
+  $('#newChat2').click(() => {
+    socket.emit('join', {room2:"2"});
+    return false;
+  });
+</script>
+
+
+<h1>Create a chat</h1>
+
+<a href="#" id="newChat1">New CHAT room1</a>
+<a href="#" id="newChat2">New CHAT room2</a>

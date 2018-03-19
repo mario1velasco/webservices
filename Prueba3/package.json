@@ -1,0 +1,21 @@
+{
+  "name": "prueba3",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./app",
+    "dev": "DEBUG=socket.io* nodemon ./app"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "morgan": "~1.9.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-ejs-layouts": "^2.3.1",
+    "path": "^0.12.7",
+    "socket.io": "^2.0.4"
+  }
+}

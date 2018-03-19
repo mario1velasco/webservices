@@ -1,0 +1,64 @@
+<script>
+  const socket = io.connect('http://localhost:3000', {
+    'forceNew': true
+  });
+
+  socket.emit('join', `show-id-primero`);
+
+  socket.on('comment:added', (comment) => {
+    console.log("AÑADIDO comentario");
+    console.log(comment);
+
+  })
+
+  function addMessage(event) {
+    event.preventDefault();
+    console.log("Add message");
+    var message = {
+      author: document.getElementById('username').value,
+      text: document.getElementById('texto').value
+    };
+    socket.emit('addComment', message)
+
+    return false;
+  }
+
+  function sendMessage() {
+    console.log("Add message");
+    var message = {
+      author: document.getElementById('username').value,
+      text: document.getElementById('texto').value
+    };
+    socket.emit('addComment', message)
+
+    return false;
+  }
+  function disconnect() {
+    console.log("Disconnect.");
+    socket.disconnect();
+  }
+
+  $(document).ready(function () {
+    console.log("ready!");
+  });
+</script>
+
+
+
+<h1>
+  My App</h1>
+<div id="messages"></div>
+<br/>
+<form onsubmit="return addMessage()">
+  <input type="text" id="username" placeholder="Tu Nombre">
+  <input type="text" id="texto" placeholder="Cuéntanos algo...">
+  <input type="submit" value="Enviar!">
+</form>
+
+<button type="submit" onclick="disconnect()">DISCONNECT</button>
+<button type="submit" onclick="sendMessage()">MESSAGE</button>
+
+
+<p></p>
+
+<a href="/new" id="newChat1">New CHAT room1</a>
