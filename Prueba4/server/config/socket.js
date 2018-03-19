@@ -25,7 +25,7 @@ module.exports = function () {
         response.push(data);
         // socket.broadcast.to(socket.room).emit('comment:added', data)
         // socket.to(socket.room).emit('comment:added', data)
-        socket.to(socket.room).emit('comment:added', response)
+        socket.emit('comment:added', response)
       })
     })
 

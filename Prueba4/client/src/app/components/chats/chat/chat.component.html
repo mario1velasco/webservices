@@ -6,14 +6,14 @@
   <div>
     <div>
       <label for="username">username</label>
-      <input type="text" name="username" [(ngModel)]="user" #username="ngModel" required>
+      <input type="text" name="username" [(ngModel)]="message.username" #username="ngModel" required>
       <ul *ngIf="username.errors && username.touched">
         <li *ngIf="username.errors.required">username is required</li>
       </ul>
     </div>
     <div>
       <label for="message">message</label>
-      <input type="text" name="message" [(ngModel)]="text" #message="ngModel" required>
+      <input type="text" name="message" [(ngModel)]="message.text" #message="ngModel" required>
       <ul *ngIf="message.errors && message.touched">
         <li *ngIf="message.errors.required">message is required</li>
       </ul>
