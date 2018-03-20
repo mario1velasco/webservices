@@ -15,6 +15,13 @@
         <li *ngIf="message.errors.required">message is required</li>
       </ul>
     </div>
+    <div>
+      <label for="lenguage">lenguage</label>
+      <input type="text" name="lenguage" [(ngModel)]="lengua" #lenguage="ngModel" required>
+      <ul *ngIf="lenguage.errors && lenguage.touched">
+        <li *ngIf="lenguage.errors.required">lenguage is required</li>
+      </ul>
+    </div>
   </div>
   <button type="submit" [disabled]="!createForm.valid">Save</button>
 </form>

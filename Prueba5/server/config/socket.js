@@ -1,3 +1,5 @@
+// const Chat = require('../models/chat.model');
+
 let allMessages = [];
 let created_by;
 let users = [];
@@ -5,8 +7,9 @@ let chat = {
   room: "",
   users: [],
   created_by: "",
-  messageHistory:[]
+  messageHistory: []
 };
+let chats = [];
 
 
 module.exports = function () {
@@ -15,20 +18,22 @@ module.exports = function () {
 
     io.on('connection', (socket) => {
       //AQUI TIEES QUE SACER EL USERNAME Y PONER
-      // SOCKEt.id=username
+      // SOCKEt.id=username      
       console.log(`Connected ${socket.id} on instance`);
-      addUser(socket.id);
-      // created_by = created_by || socket.id;
-      chat.created_by=chat.created_by || socket.id;
-      console.log(`CREATED BY = ${chat.created_by}`);
       
-
       socket.on('join', room => {
         socket.room = room
+        console.log(`JOIN SOCKET ${socket.id}`);
+        newRoom(room, socket.id);
+        // addUser(socket.id, room);
+        // created_by = created_by || socket.id;
+        // chat.created_by=chat.created_by || socket.id;
+        // console.log(`NEW ROOM CREATED BY = ${chat.created_by}`);
+
         socket.join(room, () => {
-          chat.room=chat.room || socket.room;
+          // chat.room = chat.room || socket.room;
           console.log('Rooms: ', socket.rooms)
-          console.log('Room: ', chat.room)
+          console.log('Room: ', socket.room)
         })
       })
 
@@ -36,13 +41,13 @@ module.exports = function () {
         socket.emit('previousComments', allMessages);
       }
 
-      socket.on('addComment', data => {
+      socket.on('addComment', message => {
         // console.log(Object.keys(io.sockets.sockets));
-
-        allMessages.push(data);
+        // allMessages.push(message);
+        addMessage(message)
         let response = []
-        response.push(data);
-        // socket.broadcast.to(socket.room).emit('comment:added', data)
+        response.push(message);
+        // socket.broadcast.to(socket.room).emit('comment:added', message)
         io.sockets.to(socket.room).emit('comment:added', response)
       })
 
@@ -57,22 +62,54 @@ module.exports = function () {
   }
 }
 
-function hola() {
-  console.log("HooLLAA");
+function newRoom(room, socketId) {
+  let exists = false;
+  console.log("room = " + room);
+  let position = 0;
+  chats.forEach(chat => {
+    console.log(`Chat room = ${chat.room}`);
+    console.log(`Room = ${room}`);
+    console.log(`Position ${position}`);
+    
+    if (String(room) === String(chat.room)) {
+      exists = true;
+      console.log(`Exist = ${exists}`);
+      return
+    }
+    position++;
+  });
+
+  if (!exists) {
+    
+    let newChat = {};
+    newChat.room = room;
+    newChat.created_by = socketId;
+    newChat.users = [];
+    newChat.users.push(socketId)
+    newChat.messageHistory = [];
+    chats.push(newChat)
+    console.log("New Chat");
+    console.log(newChat);
+    
+  } else {
+    console.log("Add USER");
+    addUser(socketId, position)
+  }
 }
 
-function addUser(userId) {
-  let noExists = true;
-  console.log("userID = "+userId);
+function addUser(userId, position) {
+  let exists = false;
+  console.log("userID = " + userId);
+  console.log("Position = " + position);
   
-  chat.users.forEach(user => {
+  chats[Number(position)].users.forEach(user => {
     if (String(user) === String(userId)) {
-      noExists = false;
+      exists = true;
       return;
     }
   });
-  if (noExists) {
-    chat.users.push(userId)
+  if (!exists) {
+    chats[Number(position)].users.push(userId)
   }
-  console.log(chat.users);  
+  console.log(chats[Number(position)]);
 }

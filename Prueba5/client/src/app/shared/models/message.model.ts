@@ -1,5 +1,6 @@
 export class Message {
-  username?:String;
+  created_by?:String;
   text?:String;
+  lenguage?:String;
   date?:Date;
 }

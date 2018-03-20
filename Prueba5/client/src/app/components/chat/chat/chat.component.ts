@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit {
   id: String = "";
   user: String = "";
   texto: String = "";
+  lengua: String = "";
 
   constructor(
     private chat:ChatService,
@@ -43,8 +44,9 @@ export class ChatComponent implements OnInit {
   }
 
   onSubmitCreateForm(form:NgForm){
-    this.message.username=this.user;
+    this.message.created_by=this.user;
     this.message.text=this.texto;
+    this.message.lenguage=this.lengua;
     console.log("Mandar message = ");
     console.log(this.message);
         
